@@ -26,11 +26,6 @@
 # 　　\33[?25h 显示光标
 
 
-START_COLOR='\033[1;36m'
-LOADING_COLOR='\033[1;33m'
-DONE_COLOR='\033[1;32m'
-ERR_COLOR='\033[1;31m'
-
 ROOT_DIR=$1
 GIT_URL=$2
 GIT_BRANCH=$3
@@ -40,22 +35,17 @@ BUILD_DIR=$ROOT_DIR/build
 TIME=$(date "+%Y-%m-%d %H:%M:%S")
 
 rm -rf $TEMP_DIR
-if [[ ! $ROOT_DIR || ! $GIT_URL || ! $GIT_BRANCH]]; then
-  echo -e "\033[31m请传入ROOT_DIR/GIT_URL/GIT_BRANCH\033[0m"
-  exit
-fi
 
-echo -e "${START_COLOR}======   start build   ======\033[0m"
+echo -e "\033[1;33m开始打包代码...\E[0m"
 yarn build
-echo -e "${DONE_COLOR}build done.\033[2J"
+echo -e "\033[1;32m打包结束.\E[2J"
 
-echo -e "${START_COLOR}======   start deploy   ======\33[0m"
-echo -e "${LOADING_COLOR}start clone...\033[0m"
+echo -e "\033[1;33m拉取后台项目...\E[0m"
 git clone -b ${GIT_BRANCH} ${GIT_URL} ${TEMP_DIR}
-echo -e "${DONE_COLOR}clone done.\033[0m"
+echo -e "\033[1;32m拉取成功.\E[0m"
 
 if [ ! -d $BUILD_DIR ]; then
-  echo -e "\033[31m请先打包项目\033[0m"
+  echo -e "\E[31m请先打包项目\E[0m"
   exit
 fi
 
@@ -72,21 +62,20 @@ copy_file() {
   cp $BUILD_DIR/precache-manifest*.js ${FRONT_DIR}/templates/
 }
 
-echo -e "${LOADING_COLOR}=====start remove-copy=====\033[0m"
+echo -e "\033[1;33m开始注入前端代码...\E[0m"
 remove_file
 copy_file
-echo -e "${DONE_COLOR}remove-copy done\033[0m"
+echo -e "\033[1;32m注入完毕\E[0m"
 
 cd $TEMP_DIR
-echo -e "${LOADING_COLOR}start push\033[0m"
 git add .
-echo -e "${LOADING_COLOR}add done.\033[0m"
+echo -e "\033[1;33mgit add .\E[0m"
 echo -e "${TIME}"
 git commit -m "front: code push $TIME"
-echo -e "${LOADING_COLOR}commit done.\033[2J"
-echo -e "${LOADING_COLOR}===== start push =====\033[0m"
+echo -e "\033[1;33mgit commit done.(front: code push $TIME)\E[2J"
+echo -e "\033[1;33m开始推送前端代码...\E[0m"
 git push
-echo -e "${DONE_COLOR}pull done.\033[0m"
+echo -e "\033[1;32m推送完毕.\E[0m"
 
 rm -rf $TEMP_DIR
 

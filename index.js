@@ -20,6 +20,7 @@ const buildProcess = spawn("bash", [
   GIT_URL,
   GIT_BRANCH,
 ]);
+
 buildProcess.stdout.on("data", (data) => {
   let msg = decoder.write(data);
   if (msg) {
@@ -30,6 +31,7 @@ buildProcess.stderr.on("data", (data) => {
   let msg = decoder.write(data);
   if (msg) {
     console.log(msg.red);
+    process.exit(1);
   }
 });
 buildProcess.on("close", () => {

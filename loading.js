@@ -12,14 +12,14 @@ module.exports = {
   },
   loading: async function() {
     while (flag) {
-      stdout("—".random);
-      await wait(300);
-      stdout("\\".random);
-      await wait(300);
-      stdout("|".random);
-      await wait(300);
-      stdout("/".random);
-      await wait(300);
+      stdout('-');
+      await wait(200);
+      stdout('\\');
+      await wait(200);
+      stdout('|');
+      await wait(200);
+      stdout('/');
+      await wait(200);
     }
     if(!flag) {
       stdout('')
