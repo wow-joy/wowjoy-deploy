@@ -5,7 +5,7 @@ const [_, __, serviceId, defaultUsername, defaultPassword] = process.argv;
 const ROOT_DIR = resolve().replace(/\\/g, "/");
 const config = require(resolve(ROOT_DIR, "./deploy.config.js"));
 
-if ((!config.serviceId && !serviceId) || !config.gitUrl || !config.gitBranch) {
+if (!config.gitUrl || !config.gitBranch) {
   console.log(
     "Error: (serviceId, gitUrl, gitBranch)必须提供，请前往开发者平台获取serviceId, 完善deploy.config.js"
       .red
