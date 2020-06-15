@@ -77,8 +77,10 @@ async function getServiceId({ gitUrl, accessToken, tokenType }) {
       " 服务描述：",
       microService.description
     );
+  } else {
+    throw new Error("获取不到该serviceId, 请确认您的gitUrl是否正确？");
   }
-  return microService ? microService.id : undefined;
+  return microService.id;
 }
 
 // 构建
@@ -400,7 +402,7 @@ async function deploy({
   };
 }
 
-async function main({ serviceId, defaultUsername, defaultPassword, gitUrl }) {
+async function main({ defaultUsername, defaultPassword, gitUrl }) {
   const {
     accessToken,
     expiryDuration,
@@ -408,31 +410,8 @@ async function main({ serviceId, defaultUsername, defaultPassword, gitUrl }) {
     tokenType,
     userId,
   } = await login({ defaultUsername, defaultPassword });
-  const sid = await getServiceId({ gitUrl, accessToken, tokenType });
+  const serviceId = await getServiceId({ gitUrl, accessToken, tokenType });
   await new Promise((res) => setTimeout(res, 2000));
-  if (!serviceId) {
-    serviceId = sid;
-  } else if (!sid) {
-    const { isUseLocal } = await prompt({
-      type: "confirm",
-      message:
-        "获取不到该serviceId, 请确认你配置的gitUrl正确, 或者直接使用配置中serviceId ？",
-      name: "isUseLocal",
-    });
-    if (!isUseLocal) {
-      return;
-    }
-  } else if (sid !== serviceId) {
-    const { isUseOnline } = await prompt({
-      type: "confirm",
-      message:
-        "获取到的 serviceId 和你的配置 serviceId 不一致, 是否使用获取的 serviceId？",
-      name: "isUseOnline",
-    });
-    if (isUseOnline) {
-      serviceId = sid;
-    }
-  }
   const { buildId, serviceVersionId } = await build({
     accessToken,
     expiryDuration,
