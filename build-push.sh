@@ -31,7 +31,7 @@ GIT_URL=$2
 GIT_BRANCH=$3
 TEMP_DIR=$ROOT_DIR/.temp
 FRONT_DIR=$TEMP_DIR/src/main/resources
-BUILD_DIR=$ROOT_DIR/build
+BUILD_DIR=$ROOT_DIR/$OUTPUT
 TIME=$(date "+%Y-%m-%d %H:%M:%S")
 
 rm -rf $TEMP_DIR
@@ -56,10 +56,8 @@ remove_file() {
   rm ${FRONT_DIR}/templates/precache-manifest*.js
 }
 copy_file() {
-  cp -r $BUILD_DIR/static/ ${FRONT_DIR}/static/static
-  cp $BUILD_DIR/asset-manifest.json ${FRONT_DIR}/templates/
-  cp $BUILD_DIR/index.html ${FRONT_DIR}/templates/
-  cp $BUILD_DIR/precache-manifest*.js ${FRONT_DIR}/templates/
+  mv $BUILD_DIR/static/ ${FRONT_DIR}/static/
+  cp -r $BUILD_DIR/* ${FRONT_DIR}/templates/
 }
 
 echo -e "\033[1;33m开始注入前端代码...\E[0m"

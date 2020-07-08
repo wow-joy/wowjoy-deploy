@@ -10,6 +10,7 @@ const decoder = new StringDecoder("utf8");
 
 const GIT_URL = config.gitUrl;
 const GIT_BRANCH = config.gitBranch;
+const OUTPUT = config.output;
 const serviceId = config.serviceId;
 const defaultUsername = config.defaultUsername;
 const defaultPassword = config.defaultPassword;
@@ -19,6 +20,7 @@ const buildProcess = spawn("bash", [
   ROOT_DIR,
   GIT_URL,
   GIT_BRANCH,
+  OUTPUT,
 ]);
 
 buildProcess.stdout.on("data", (data) => {
