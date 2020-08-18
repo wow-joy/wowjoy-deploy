@@ -31,11 +31,11 @@ GIT_URL=$2
 GIT_BRANCH=$3
 TEMP_DIR=$ROOT_DIR/.temp
 FRONT_DIR=$TEMP_DIR/src/main/resources
-BUILD_DIR=$ROOT_DIR/$OUTPUT
+BUILD_DIR=$ROOT_DIR/$4
 TIME=$(date "+%Y-%m-%d %H:%M:%S")
 
 rm -rf $TEMP_DIR
-
+mkdir $TEMP_DIR
 echo -e "\033[1;33m开始打包代码...\E[0m"
 yarn build
 echo -e "\033[1;32m打包结束.\E[2J"
@@ -51,13 +51,11 @@ fi
 
 remove_file() {
   rm -rf ${FRONT_DIR}/static/static
-  rm ${FRONT_DIR}/templates/asset-manifest.json
-  rm ${FRONT_DIR}/templates/index.html
   rm ${FRONT_DIR}/templates/precache-manifest*.js
 }
 copy_file() {
-  mv $BUILD_DIR/static/ ${FRONT_DIR}/static/
-  cp -r $BUILD_DIR/* ${FRONT_DIR}/templates/
+  mv $BUILD_DIR/index.html ${FRONT_DIR}/templates
+  mv $BUILD_DIR/* $FRONT_DIR/static/
 }
 
 echo -e "\033[1;33m开始注入前端代码...\E[0m"

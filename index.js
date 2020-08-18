@@ -32,14 +32,13 @@ buildProcess.stdout.on("data", (data) => {
 buildProcess.stderr.on("data", (data) => {
   let msg = decoder.write(data);
   if (msg) {
-    console.log(msg.red);
-    process.exit(1);
+    console.log(msg.bgBlue);
   }
 });
 buildProcess.on("close", () => {
   console.log("build push success.".green.bold);
   try {
-    deploy({ serviceId, defaultUsername, defaultPassword });
+    deploy({ gitUrl: GIT_URL, defaultUsername, defaultPassword });
   } catch (err) {
     console.log("出错了".red, err);
     process.exitCode = 1;

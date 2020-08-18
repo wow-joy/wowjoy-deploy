@@ -1,6 +1,6 @@
 {
   "name": "@wowjoy/deploy",
-  "version": "0.0.1-alpha.9",
+  "version": "0.0.1-alpha.11",
   "description": "wowjoy deploy",
   "main": "index.js",
   "private": false,
